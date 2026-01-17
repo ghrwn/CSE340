@@ -17,7 +17,9 @@ const expressLayouts = require("express-ejs-layouts")
  *************************/
 app.use(static)
 
-// Index route
+/* ***********************
+ * Index route
+ *************************/
 app.get("/", function (req, res) {
   res.render("index", { title: "Home" })
 })
@@ -27,11 +29,10 @@ app.get("/", function (req, res) {
  *************************/
 app.set("view engine", "ejs")
 app.use(expressLayouts)
-app.set("layout", "./layouts/layout") // not at views root
+app.set("layout", "./layouts/layout")
 
 /* ***********************
  * Local Server Information
- * Values from .env (environment) file
  *************************/
 const port = process.env.PORT
 const host = process.env.HOST
