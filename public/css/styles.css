@@ -1,4 +1,4 @@
-/* Mobile-first base styles */
+/* Reset */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -7,57 +7,118 @@
 
 body {
   font-family: Arial, Helvetica, sans-serif;
-  line-height: 1.5;
+  background: #f5f5f5;
+  color: #111;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
+#wrapper {
+  max-width: 960px;
+  margin: auto;
+  background: #fff;
+  padding: 1rem;
 }
 
-header {
+/* Header */
+.site-header {
   display: flex;
   justify-content: space-between;
-  padding: 1rem;
+  align-items: center;
 }
 
-nav ul {
+.account-link {
+  text-decoration: none;
+  color: #333;
+}
+
+/* Navigation */
+.main-nav {
+  background: #222;
+  margin: 1rem 0;
+}
+
+.main-nav ul {
   list-style: none;
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 1rem;
+  justify-content: space-around;
 }
 
-nav a {
+.main-nav a {
+  color: #fff;
   text-decoration: none;
+  padding: 0.75rem;
+  display: block;
 }
 
+/* Hero */
 .hero {
-  padding: 1rem;
-}
-
-.features {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding: 1rem;
 }
 
-footer {
+.hero-image {
+  width: 100%;
+  height: auto;
+}
+
+.hero-text ul {
+  margin: 1rem 0;
+}
+
+.hero-text button {
+  padding: 0.5rem 1rem;
+  background: #0097a7;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+/* Content */
+.content-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.upgrade-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.upgrade-grid figure {
   text-align: center;
-  padding: 1rem;
+  background: #0097a7;
+  padding: 0.5rem;
+  color: #fff;
 }
 
-/* Larger screens */
-@media (min-width: 768px) {
-  nav ul {
+.upgrade-grid img {
+  max-width: 100%;
+}
+
+/* Footer */
+.site-footer {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* Desktop */
+@media screen and (min-width: 768px) {
+  .hero {
     flex-direction: row;
-    justify-content: center;
+    align-items: center;
   }
 
-  .features {
+  .content-grid {
     flex-direction: row;
-    justify-content: space-between;
+    gap: 3rem;
+  }
+
+  .upgrades,
+  .reviews {
+    width: 50%;
   }
 }

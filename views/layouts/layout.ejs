@@ -2,11 +2,15 @@
 <html lang="en">
   <%- include('../partials/head') %>
   <body>
-    <%- include('../partials/header') %>
-    <%- include('../partials/navigation') %>
-    <main>
-      <%- body %>
-    </main>
-    <%- include('../partials/footer') %>
+    <div id="wrapper">
+      <%- include('../partials/header') %>
+      <%- include('../partials/navigation') %>
+
+      <main>
+        <%- body %>
+      </main>
+
+      <%- include('../partials/footer') %>
+    </div>
   </body>
 </html>
