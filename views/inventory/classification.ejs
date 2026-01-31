@@ -1,0 +1,19 @@
+<% 
+/* ***************************
+ * Classification View
+ * Displays inventory items by classification
+ * ***************************/
+%>
+
+<!-- Content Heading -->
+<% if (title) { %>
+  <h1><%= title %></h1>
+<% } else { %>
+  <% res.redirect('/') %>
+<% } %>
+
+<!-- Message Block (future use) -->
+<%# messages() %>
+
+<!-- Inventory Items Display -->
+<%- grid %>
