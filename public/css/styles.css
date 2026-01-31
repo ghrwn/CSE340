@@ -242,3 +242,58 @@ footer {
   color: #007a87;
   margin-top: 0.25rem;
 }
+
+/* =========================
+   INVENTORY DETAIL VIEW
+========================= */
+
+.inventory-detail-wrapper {
+  margin-top: 2rem;
+}
+
+/* Layout container */
+.vehicle-detail {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+/* Desktop: side-by-side */
+@media screen and (min-width: 768px) {
+  .vehicle-detail {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+/* Image */
+.vehicle-detail-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+/* Info panel */
+.vehicle-detail-info {
+  background-color: #f9f9f9;
+  padding: 1.25rem;
+  border-radius: 6px;
+}
+
+.vehicle-detail-info h2 {
+  margin-top: 0;
+  color: #003366;
+}
+
+/* Price emphasis */
+.vehicle-detail-info .price {
+  font-size: 1.3rem;
+  color: #007a87;
+  margin: 1rem 0;
+}
+
+/* Paragraph spacing */
+.vehicle-detail-info p {
+  margin: 0.5rem 0;
+  line-height: 1.4;
+}
