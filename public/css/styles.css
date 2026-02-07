@@ -201,7 +201,6 @@ footer {
   gap: 1.5rem;
 }
 
-/* Individual vehicle card */
 .inv-display li {
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -211,7 +210,6 @@ footer {
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-/* Vehicle image */
 .inv-display img {
   width: 100%;
   max-height: 160px;
@@ -219,13 +217,11 @@ footer {
   margin-bottom: 0.75rem;
 }
 
-/* Vehicle name */
 .inv-display h2 {
   font-size: 1.1rem;
   margin: 0.5rem 0;
 }
 
-/* Vehicle link */
 .inv-display h2 a {
   text-decoration: none;
   color: #003366;
@@ -235,7 +231,6 @@ footer {
   text-decoration: underline;
 }
 
-/* Price */
 .inv-display span {
   display: block;
   font-weight: bold;
@@ -251,14 +246,12 @@ footer {
   margin-top: 2rem;
 }
 
-/* Layout container */
 .vehicle-detail {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.5rem;
 }
 
-/* Desktop: side-by-side */
 @media screen and (min-width: 768px) {
   .vehicle-detail {
     grid-template-columns: 1fr 1fr;
@@ -266,14 +259,12 @@ footer {
   }
 }
 
-/* Image */
 .vehicle-detail-image img {
   width: 100%;
   height: auto;
   border-radius: 6px;
 }
 
-/* Info panel */
 .vehicle-detail-info {
   background-color: #f9f9f9;
   padding: 1.25rem;
@@ -285,15 +276,100 @@ footer {
   color: #003366;
 }
 
-/* Price emphasis */
 .vehicle-detail-info .price {
   font-size: 1.3rem;
   color: #007a87;
   margin: 1rem 0;
 }
 
-/* Paragraph spacing */
 .vehicle-detail-info p {
   margin: 0.5rem 0;
   line-height: 1.4;
+}
+
+/* =========================
+   Account (Login/Register)
+========================= */
+
+.account-wrap {
+  max-width: 420px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  border-radius: 10px;
+  background: #2f3f4e;
+  color: #ffffff;
+}
+
+.account-wrap h1 {
+  margin: 0 0 1rem 0;
+}
+
+.account-form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.account-form label {
+  font-weight: 600;
+}
+
+.account-form input {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.account-form input::placeholder {
+  color: #666;
+}
+
+.account-form button {
+  padding: 0.7rem 1rem;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 700;
+  background: #2d6cdf;
+  color: #fff;
+}
+
+.account-form button:hover {
+  background: #1f4fa8;
+}
+
+#pswdBtn {
+  background: #555;
+  color: #fff;
+}
+
+#pswdBtn:hover {
+  background: #333;
+}
+
+.account-alt {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+
+.account-alt a {
+  color: #7ecbff;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.account-alt a:hover {
+  text-decoration: underline;
+}
+
+/* Flash / Error Messages */
+.notice {
+  margin: 0 0 1rem 0;
+  padding: 0.8rem;
+  background: #ffe0e0;
+  border: 1px solid #ffb3b3;
+  border-radius: 6px;
+  list-style: none;
+  color: #000;
 }

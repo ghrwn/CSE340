@@ -3,10 +3,55 @@ require("dotenv").config()
 const app = express()
 const expressLayouts = require("express-ejs-layouts")
 
-const utilities = require("./utilities")
+/* ======================
+ * NEW: Body Parser
+ * ====================== */
+const bodyParser = require("body-parser")
 
+/* ======================
+ * NEW: Session Packages
+ * ====================== */
+const session = require("express-session")
+const pool = require("./database")
+
+/* ======================
+ * Utilities & Routes
+ * ====================== */
+const utilities = require("./utilities")
 const staticRoutes = require("./routes/static")
 const inventoryRoutes = require("./routes/inventoryRoute")
+const accountRoutes = require("./routes/accountRoute")
+
+/* ***********************
+ * Middleware — Body Parser
+ *************************/
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+
+/* ***********************
+ * Middleware — Sessions
+ *************************/
+app.use(
+  session({
+    store: new (require("connect-pg-simple")(session))({
+      createTableIfMissing: true,
+      pool,
+    }),
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true,
+    name: "sessionId",
+  })
+)
+
+/* ***********************
+ * Middleware — Flash Messages
+ *************************/
+app.use(require("connect-flash")())
+app.use(function (req, res, next) {
+  res.locals.messages = require("express-messages")(req, res)
+  next()
+})
 
 /* ***********************
  * View Engine & Layout
@@ -20,14 +65,16 @@ app.set("layout", "./layouts/layout")
  *************************/
 app.use(staticRoutes)
 app.use("/inventory", inventoryRoutes)
+app.use("/account", accountRoutes)
 
 /* ***********************
- * Home Route (wrapped)
+ * Home Route
  *************************/
 app.get(
   "/",
   utilities.handleErrors(async (req, res) => {
     const nav = await utilities.getNav()
+
     res.render("index", {
       title: "Home",
       nav,
@@ -38,7 +85,7 @@ app.get(
 /* ***********************
  * 404 Route (MUST BE LAST)
  *************************/
-app.use(async (req, res, next) => {
+app.use((req, res, next) => {
   next({
     status: 404,
     message: "Sorry, we appear to have lost that page.",
@@ -47,18 +94,15 @@ app.use(async (req, res, next) => {
 
 /* ***********************
  * Express Error Handler
- * Place AFTER all routes
  *************************/
 app.use(async (err, req, res, next) => {
   const nav = await utilities.getNav()
   console.error(`Error at: "${req.originalUrl}": ${err.message}`)
 
-  let message
-  if (err.status == 404) {
-    message = err.message
-  } else {
-    message = "Oh no! There was a crash. Maybe try a different route?"
-  }
+  const message =
+    err.status === 404
+      ? err.message
+      : "Oh no! There was a crash. Maybe try a different route?"
 
   res.status(err.status || 500).render("errors/error", {
     title: err.status || "Server Error",
@@ -68,7 +112,7 @@ app.use(async (err, req, res, next) => {
 })
 
 /* ***********************
- * Local Server Information
+ * Local Server Info
  *************************/
 const port = process.env.PORT
 const host = process.env.HOST
