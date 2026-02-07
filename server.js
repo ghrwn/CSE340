@@ -4,12 +4,13 @@ const app = express()
 const expressLayouts = require("express-ejs-layouts")
 
 /* ======================
- * NEW: Body Parser
+ * Body Parsing (Built-in Express)
  * ====================== */
-const bodyParser = require("body-parser")
+app.use(express.json())
+app.use(express.urlencoded({ extended: true })) // replaces body-parser
 
 /* ======================
- * NEW: Session Packages
+ * Session Packages
  * ====================== */
 const session = require("express-session")
 const pool = require("./database")
@@ -21,12 +22,6 @@ const utilities = require("./utilities")
 const staticRoutes = require("./routes/static")
 const inventoryRoutes = require("./routes/inventoryRoute")
 const accountRoutes = require("./routes/accountRoute")
-
-/* ***********************
- * Middleware — Body Parser
- *************************/
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 /* ***********************
  * Middleware — Sessions
