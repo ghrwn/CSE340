@@ -20,7 +20,7 @@
       id="account_firstname"
       name="account_firstname"
       required
-      value="<%= account_firstname || '' %>"
+      value="<%= locals.account_firstname %>"
     />
 
     <label for="account_lastname">Last Name:</label>
@@ -29,7 +29,7 @@
       id="account_lastname"
       name="account_lastname"
       required
-      value="<%= account_lastname || '' %>"
+      value="<%= locals.account_lastname %>"
     />
 
     <label for="account_email">Email Address:</label>
@@ -38,7 +38,7 @@
       id="account_email"
       name="account_email"
       required
-      value="<%= account_email || '' %>"
+      value="<%= locals.account_email %>"
       placeholder="Enter a valid email address"
     />
 

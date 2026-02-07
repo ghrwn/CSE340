@@ -52,8 +52,39 @@ async function getInventoryById(inv_id) {
   }
 }
 
+/* ***************************
+ *  Add new inventory item
+ * ************************** */
+async function addInventory(invData) {
+  try {
+    const sql = `
+      INSERT INTO public.inventory
+      (inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id)
+      VALUES
+      ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+      RETURNING *
+    `
+    const params = [
+      invData.inv_make,
+      invData.inv_model,
+      invData.inv_year,
+      invData.inv_description,
+      invData.inv_image,
+      invData.inv_thumbnail,
+      invData.inv_price,
+      invData.inv_miles,
+      invData.inv_color,
+      invData.classification_id,
+    ]
+    return await pool.query(sql, params)
+  } catch (error) {
+    return error.message
+  }
+}
+
 module.exports = {
   getClassifications,
   getInventoryByClassificationId,
   getInventoryById,
+  addInventory,
 }

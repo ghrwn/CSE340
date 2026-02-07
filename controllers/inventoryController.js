@@ -2,6 +2,75 @@ const invModel = require("../models/inventory-model")
 const utilities = require("../utilities")
 
 /* ***************************
+ * Build Inventory Management View
+ * ************************** */
+async function buildManagement(req, res, next) {
+  const nav = await utilities.getNav()
+
+  res.render("inventory/management", {
+    title: "Vehicle Management",
+    nav,
+    errors: null,
+  })
+}
+
+/* ***************************
+ * Deliver Add Inventory View
+ * ************************** */
+async function buildAddInventory(req, res, next) {
+  const nav = await utilities.getNav()
+  const classificationSelect = await utilities.buildClassificationList()
+
+  res.render("inventory/add-inventory", {
+    title: "Add Inventory",
+    nav,
+    errors: null,
+    classificationSelect,
+  })
+}
+
+/* ***************************
+ * Process Add Inventory
+ * ************************** */
+async function addInventory(req, res, next) {
+  const nav = await utilities.getNav()
+
+  const invData = {
+    classification_id: req.body.classification_id,
+    inv_make: req.body.inv_make,
+    inv_model: req.body.inv_model,
+    inv_year: req.body.inv_year,
+    inv_description: req.body.inv_description,
+    inv_image: req.body.inv_image,
+    inv_thumbnail: req.body.inv_thumbnail,
+    inv_price: req.body.inv_price,
+    inv_miles: req.body.inv_miles,
+    inv_color: req.body.inv_color,
+  }
+
+  const result = await invModel.addInventory(invData)
+
+  if (result && result.rows) {
+    req.flash("notice", "New inventory item successfully added.")
+    res.status(201).render("inventory/management", {
+      title: "Vehicle Management",
+      nav,
+      errors: null,
+    })
+  } else {
+    req.flash("notice", "Sorry, the inventory item was not added.")
+    const classificationSelect = await utilities.buildClassificationList(invData.classification_id)
+    res.status(500).render("inventory/add-inventory", {
+      title: "Add Inventory",
+      nav,
+      errors: null,
+      classificationSelect,
+      ...invData,
+    })
+  }
+}
+
+/* ***************************
  * Build inventory by classification view
  * ************************** */
 async function buildByClassificationId(req, res, next) {
@@ -69,6 +138,9 @@ async function triggerError(req, res, next) {
 }
 
 module.exports = {
+  buildManagement,
+  buildAddInventory,
+  addInventory,
   buildByClassificationId,
   buildByInventoryId,
   triggerError,

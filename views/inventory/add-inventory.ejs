@@ -1,0 +1,120 @@
+<section class="account-wrap">
+  <h1><%= title %></h1>
+
+  <p class="form-note">
+    All fields are required. Price can be integer or decimal. Miles must be digits only. Year must be 4 digits.
+  </p>
+
+  <% if (errors) { %>
+    <ul class="notice">
+      <% errors.array().forEach(error => { %>
+        <li><%= error.msg %></li>
+      <% }) %>
+    </ul>
+  <% } %>
+
+  <form class="account-form" action="/inventory/add-inventory" method="post">
+
+    <label for="classificationList">Classification:</label>
+    <%- classificationSelect %>
+
+    <label for="inv_make">Make:</label>
+    <input
+      type="text"
+      id="inv_make"
+      name="inv_make"
+      required
+      minlength="2"
+      value="<%= locals.inv_make || '' %>"
+      placeholder="e.g., GM"
+    />
+
+    <label for="inv_model">Model:</label>
+    <input
+      type="text"
+      id="inv_model"
+      name="inv_model"
+      required
+      value="<%= locals.inv_model || '' %>"
+      placeholder="e.g., Hummer"
+    />
+
+    <label for="inv_year">Year:</label>
+    <input
+      type="number"
+      id="inv_year"
+      name="inv_year"
+      required
+      min="1900"
+      max="2099"
+      value="<%= locals.inv_year || '' %>"
+      placeholder="e.g., 2017"
+    />
+
+    <label for="inv_description">Description:</label>
+    <input
+      type="text"
+      id="inv_description"
+      name="inv_description"
+      required
+      minlength="10"
+      value="<%= locals.inv_description || '' %>"
+      placeholder="Min 10 characters"
+    />
+
+    <label for="inv_image">Image Path:</label>
+    <input
+      type="text"
+      id="inv_image"
+      name="inv_image"
+      required
+      value="<%= locals.inv_image || '/images/vehicles/no-image.png' %>"
+    />
+
+    <label for="inv_thumbnail">Thumbnail Path:</label>
+    <input
+      type="text"
+      id="inv_thumbnail"
+      name="inv_thumbnail"
+      required
+      value="<%= locals.inv_thumbnail || '/images/vehicles/no-image-tn.png' %>"
+    />
+
+    <label for="inv_price">Price:</label>
+    <input
+      type="number"
+      id="inv_price"
+      name="inv_price"
+      required
+      step="0.01"
+      min="0"
+      value="<%= locals.inv_price || '' %>"
+      placeholder="e.g., 25000 or 25000.00"
+    />
+
+    <label for="inv_miles">Miles:</label>
+    <input
+      type="number"
+      id="inv_miles"
+      name="inv_miles"
+      required
+      min="0"
+      step="1"
+      value="<%= locals.inv_miles || '' %>"
+      placeholder="Digits only (e.g., 39500)"
+    />
+
+    <label for="inv_color">Color:</label>
+    <input
+      type="text"
+      id="inv_color"
+      name="inv_color"
+      required
+      minlength="3"
+      value="<%= locals.inv_color || '' %>"
+      placeholder="e.g., Black"
+    />
+
+    <button type="submit">Add Inventory Item</button>
+  </form>
+</section>

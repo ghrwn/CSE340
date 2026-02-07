@@ -2,6 +2,31 @@ const express = require("express")
 const router = express.Router()
 const invController = require("../controllers/inventoryController")
 const utilities = require("../utilities")
+const invValidate = require("../utilities/inventory-validation")
+
+/* ***************************
+ * Management View
+ * (accessed by /inventory)
+ * ************************** */
+router.get("/", utilities.handleErrors(invController.buildManagement))
+
+/* ***************************
+ * Add Inventory View
+ * ************************** */
+router.get(
+  "/add-inventory",
+  utilities.handleErrors(invController.buildAddInventory)
+)
+
+/* ***************************
+ * Process Add Inventory
+ * ************************** */
+router.post(
+  "/add-inventory",
+  invValidate.inventoryRules(),
+  invValidate.checkInvData,
+  utilities.handleErrors(invController.addInventory)
+)
 
 /* ***************************
  * Classification View
@@ -22,9 +47,6 @@ router.get(
 /* ***************************
  * Intentional Error Route (500)
  * ************************** */
-router.get(
-  "/error",
-  utilities.handleErrors(invController.triggerError)
-)
+router.get("/error", utilities.handleErrors(invController.triggerError))
 
 module.exports = router

@@ -1,0 +1,26 @@
+<section class="management-wrap">
+  <h1><%= title %></h1>
+
+  <!-- Flash Messages -->
+  <% if (messages) { %>
+    <%- messages() %>
+  <% } %>
+
+  <p class="form-note">
+    Use the links below to manage vehicle classifications and inventory.
+  </p>
+
+  <ul class="management-links">
+    <li>
+      <a href="/inventory/add-classification">
+        ➕ Add New Classification
+      </a>
+    </li>
+
+    <li>
+      <a href="/inventory/add-inventory">
+        🚗 Add New Inventory Item
+      </a>
+    </li>
+  </ul>
+</section>

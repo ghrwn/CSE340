@@ -402,3 +402,39 @@ footer {
 .account-form input:required:valid {
   border: 2px solid #66d9a8;
 }
+
+/* =========================
+   INVENTORY MANAGEMENT
+========================= */
+
+.management-wrap {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #f4f6f8;
+  border-radius: 10px;
+}
+
+.management-links {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0 0;
+}
+
+.management-links li {
+  margin: 1rem 0;
+}
+
+.management-links a {
+  display: block;
+  padding: 0.8rem 1rem;
+  background: #2d6cdf;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.management-links a:hover {
+  background: #1f4fa8;
+}
