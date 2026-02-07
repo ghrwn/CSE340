@@ -373,3 +373,32 @@ footer {
   list-style: none;
   color: #000;
 }
+
+/* =========================
+   Client-side Validation Styles
+========================= */
+
+.form-note {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.password-reqs {
+  background: rgba(255, 255, 255, 0.12);
+  border-left: 4px solid #7ecbff;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  line-height: 1.3;
+}
+
+/* Valid/Invalid input styling */
+.account-form input:required:invalid,
+.account-form input:focus:invalid {
+  border: 2px solid #ff6b6b;
+}
+
+.account-form input:required:valid {
+  border: 2px solid #66d9a8;
+}

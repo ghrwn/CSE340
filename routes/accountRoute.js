@@ -3,6 +3,7 @@ const router = new express.Router()
 
 const utilities = require("../utilities")
 const accountController = require("../controllers/accountController")
+const regValidate = require("../utilities/account-validation")
 
 /* ****************************************
  *  Deliver Login View
@@ -20,11 +21,11 @@ router.get(
   utilities.handleErrors(accountController.buildRegister)
 )
 
-/* ****************************************
- *  Process Registration
- * *************************************** */
+// Process the registration data
 router.post(
   "/register",
+  regValidate.registationRules(),
+  regValidate.checkRegData,
   utilities.handleErrors(accountController.registerAccount)
 )
 
