@@ -6,12 +6,13 @@ const invValidate = require("../utilities/inventory-validation")
 
 /* ***************************
  * Management View
- * (accessed by /inventory)
+ * /inventory
  * ************************** */
 router.get("/", utilities.handleErrors(invController.buildManagement))
 
 /* ***************************
  * Add Classification View
+ * /inventory/add-classification
  * ************************** */
 router.get(
   "/add-classification",
@@ -20,6 +21,7 @@ router.get(
 
 /* ***************************
  * Process Add Classification
+ * /inventory/add-classification
  * ************************** */
 router.post(
   "/add-classification",
@@ -30,6 +32,7 @@ router.post(
 
 /* ***************************
  * Add Inventory View
+ * /inventory/add-inventory
  * ************************** */
 router.get(
   "/add-inventory",
@@ -38,6 +41,7 @@ router.get(
 
 /* ***************************
  * Process Add Inventory
+ * /inventory/add-inventory
  * ************************** */
 router.post(
   "/add-inventory",

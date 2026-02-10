@@ -4,9 +4,8 @@ const utilities = require("../utilities")
 /* ***************************
  * Build Inventory Management View
  * ************************** */
-async function buildManagement(req, res, next) {
+async function buildManagement(req, res) {
   const nav = await utilities.getNav()
-
   res.render("inventory/management", {
     title: "Vehicle Management",
     nav,
@@ -17,24 +16,25 @@ async function buildManagement(req, res, next) {
 /* ***************************
  * Deliver Add Classification View
  * ************************** */
-async function buildAddClassification(req, res, next) {
+async function buildAddClassification(req, res) {
   const nav = await utilities.getNav()
-
   res.render("inventory/add-classification", {
     title: "Add Classification",
     nav,
     errors: null,
+    classification_name: "",
   })
 }
 
 /* ***************************
  * Process Add Classification
  * ************************** */
-async function addClassification(req, res, next) {
+async function addClassification(req, res) {
   const { classification_name } = req.body
-  const result = await invModel.addClassification(classification_name)
 
-  if (result) {
+  const insertResult = await invModel.addClassification(classification_name)
+
+  if (insertResult && insertResult.rowCount > 0) {
     req.flash("notice", "New classification successfully added.")
     const nav = await utilities.getNav() // rebuild nav so new item appears immediately
     res.status(201).render("inventory/management", {
@@ -42,22 +42,23 @@ async function addClassification(req, res, next) {
       nav,
       errors: null,
     })
-  } else {
-    req.flash("notice", "Sorry, the classification was not added.")
-    const nav = await utilities.getNav()
-    res.status(500).render("inventory/add-classification", {
-      title: "Add Classification",
-      nav,
-      errors: null,
-      classification_name,
-    })
+    return
   }
+
+  req.flash("notice", "Sorry, the classification was not added.")
+  const nav = await utilities.getNav()
+  res.status(500).render("inventory/add-classification", {
+    title: "Add Classification",
+    nav,
+    errors: null,
+    classification_name,
+  })
 }
 
 /* ***************************
  * Deliver Add Inventory View
  * ************************** */
-async function buildAddInventory(req, res, next) {
+async function buildAddInventory(req, res) {
   const nav = await utilities.getNav()
   const classificationSelect = await utilities.buildClassificationList()
 
@@ -72,7 +73,7 @@ async function buildAddInventory(req, res, next) {
 /* ***************************
  * Process Add Inventory
  * ************************** */
-async function addInventory(req, res, next) {
+async function addInventory(req, res) {
   const nav = await utilities.getNav()
 
   const invData = {
@@ -90,7 +91,7 @@ async function addInventory(req, res, next) {
 
   const result = await invModel.addInventory(invData)
 
-  if (result && result.rows) {
+  if (result && result.rowCount > 0) {
     req.flash("notice", "New inventory item successfully added.")
     const nav = await utilities.getNav()
     res.status(201).render("inventory/management", {
@@ -98,19 +99,18 @@ async function addInventory(req, res, next) {
       nav,
       errors: null,
     })
-  } else {
-    req.flash("notice", "Sorry, the inventory item was not added.")
-    const classificationSelect = await utilities.buildClassificationList(
-      invData.classification_id
-    )
-    res.status(500).render("inventory/add-inventory", {
-      title: "Add Inventory",
-      nav,
-      errors: null,
-      classificationSelect,
-      ...invData,
-    })
+    return
   }
+
+  req.flash("notice", "Sorry, the inventory item was not added.")
+  const classificationSelect = await utilities.buildClassificationList(invData.classification_id)
+  res.status(500).render("inventory/add-inventory", {
+    title: "Add Inventory",
+    nav,
+    errors: null,
+    classificationSelect,
+    ...invData,
+  })
 }
 
 /* ***************************
