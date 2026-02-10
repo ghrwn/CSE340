@@ -8,23 +8,27 @@ const invValidate = require("../utilities/inventory-validation")
  * Management View
  * /inventory
  * ************************** */
-router.get("/", utilities.handleErrors(invController.buildManagement))
+router.get(
+  "/",
+  utilities.checkLogin, // 🔐 PROTECTED
+  utilities.handleErrors(invController.buildManagement)
+)
 
 /* ***************************
  * Add Classification View
- * /inventory/add-classification
  * ************************** */
 router.get(
   "/add-classification",
+  utilities.checkLogin, // 🔐 PROTECTED
   utilities.handleErrors(invController.buildAddClassification)
 )
 
 /* ***************************
  * Process Add Classification
- * /inventory/add-classification
  * ************************** */
 router.post(
   "/add-classification",
+  utilities.checkLogin, // 🔐 PROTECTED
   invValidate.classificationRules(),
   invValidate.checkClassificationData,
   utilities.handleErrors(invController.addClassification)
@@ -32,19 +36,19 @@ router.post(
 
 /* ***************************
  * Add Inventory View
- * /inventory/add-inventory
  * ************************** */
 router.get(
   "/add-inventory",
+  utilities.checkLogin, // 🔐 PROTECTED
   utilities.handleErrors(invController.buildAddInventory)
 )
 
 /* ***************************
  * Process Add Inventory
- * /inventory/add-inventory
  * ************************** */
 router.post(
   "/add-inventory",
+  utilities.checkLogin, // 🔐 PROTECTED
   invValidate.inventoryRules(),
   invValidate.checkInvData,
   utilities.handleErrors(invController.addInventory)
@@ -52,6 +56,7 @@ router.post(
 
 /* ***************************
  * Classification View
+ * (Public — customers can browse)
  * ************************** */
 router.get(
   "/type/:classificationId",
@@ -60,6 +65,7 @@ router.get(
 
 /* ***************************
  * Inventory Detail View
+ * (Public)
  * ************************** */
 router.get(
   "/detail/:invId",

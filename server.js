@@ -7,7 +7,13 @@ const expressLayouts = require("express-ejs-layouts")
  * Body Parsing (Built-in Express)
  * ====================== */
 app.use(express.json())
-app.use(express.urlencoded({ extended: true })) // replaces body-parser
+app.use(express.urlencoded({ extended: true }))
+
+/* ======================
+ * Cookie Parser (for JWT cookie)
+ * ====================== */
+const cookieParser = require("cookie-parser")
+app.use(cookieParser())
 
 /* ======================
  * Session Packages
@@ -48,6 +54,11 @@ app.use(function (req, res, next) {
   next()
 })
 
+/* ======================
+ * JWT checker middleware (MUST be before routes)
+ * ====================== */
+app.use(utilities.checkJWTToken)
+
 /* ***********************
  * View Engine & Layout
  *************************/
@@ -69,7 +80,6 @@ app.get(
   "/",
   utilities.handleErrors(async (req, res) => {
     const nav = await utilities.getNav()
-
     res.render("index", {
       title: "Home",
       nav,
