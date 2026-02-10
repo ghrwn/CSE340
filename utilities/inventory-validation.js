@@ -3,6 +3,42 @@ const { body, validationResult } = require("express-validator")
 const validate = {}
 
 /* ******************************
+ * Classification Validation Rules
+ * ***************************** */
+validate.classificationRules = () => {
+  return [
+    body("classification_name")
+      .trim()
+      .escape()
+      .notEmpty()
+      .matches(/^[A-Za-z0-9]+$/)
+      .withMessage(
+        "Classification name cannot contain spaces or special characters. Letters and numbers only."
+      ),
+  ]
+}
+
+/* ******************************
+ * Check classification data and return errors or continue
+ * ***************************** */
+validate.checkClassificationData = async (req, res, next) => {
+  const { classification_name } = req.body
+  const errors = validationResult(req)
+
+  if (!errors.isEmpty()) {
+    const nav = await utilities.getNav()
+    res.render("inventory/add-classification", {
+      title: "Add Classification",
+      nav,
+      errors,
+      classification_name,
+    })
+    return
+  }
+  next()
+}
+
+/* ******************************
  * Inventory Data Validation Rules
  * ***************************** */
 validate.inventoryRules = () => {
@@ -39,10 +75,7 @@ validate.inventoryRules = () => {
       .isLength({ min: 10 })
       .withMessage("Please provide a description (min 10 characters)."),
 
-    body("inv_image")
-      .trim()
-      .notEmpty()
-      .withMessage("Please provide an image path."),
+    body("inv_image").trim().notEmpty().withMessage("Please provide an image path."),
 
     body("inv_thumbnail")
       .trim()
@@ -74,7 +107,7 @@ validate.inventoryRules = () => {
  * Check inventory data and return errors or continue to insertion
  * ***************************** */
 validate.checkInvData = async (req, res, next) => {
-  let errors = validationResult(req)
+  const errors = validationResult(req)
 
   const {
     classification_id,
@@ -90,8 +123,10 @@ validate.checkInvData = async (req, res, next) => {
   } = req.body
 
   if (!errors.isEmpty()) {
-    let nav = await utilities.getNav()
-    let classificationSelect = await utilities.buildClassificationList(classification_id)
+    const nav = await utilities.getNav()
+    const classificationSelect = await utilities.buildClassificationList(
+      classification_id
+    )
 
     res.render("inventory/add-inventory", {
       title: "Add Inventory",

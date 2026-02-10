@@ -53,6 +53,20 @@ async function getInventoryById(inv_id) {
 }
 
 /* ***************************
+ *  Add new classification
+ * ************************** */
+async function addClassification(classification_name) {
+  try {
+    const sql =
+      "INSERT INTO public.classification (classification_name) VALUES ($1) RETURNING *"
+    return await pool.query(sql, [classification_name])
+  } catch (error) {
+    console.error("addClassification error:", error)
+    return null
+  }
+}
+
+/* ***************************
  *  Add new inventory item
  * ************************** */
 async function addInventory(invData) {
@@ -86,5 +100,6 @@ module.exports = {
   getClassifications,
   getInventoryByClassificationId,
   getInventoryById,
+  addClassification,
   addInventory,
 }

@@ -15,6 +15,46 @@ async function buildManagement(req, res, next) {
 }
 
 /* ***************************
+ * Deliver Add Classification View
+ * ************************** */
+async function buildAddClassification(req, res, next) {
+  const nav = await utilities.getNav()
+
+  res.render("inventory/add-classification", {
+    title: "Add Classification",
+    nav,
+    errors: null,
+  })
+}
+
+/* ***************************
+ * Process Add Classification
+ * ************************** */
+async function addClassification(req, res, next) {
+  const { classification_name } = req.body
+  const result = await invModel.addClassification(classification_name)
+
+  if (result) {
+    req.flash("notice", "New classification successfully added.")
+    const nav = await utilities.getNav() // rebuild nav so new item appears immediately
+    res.status(201).render("inventory/management", {
+      title: "Vehicle Management",
+      nav,
+      errors: null,
+    })
+  } else {
+    req.flash("notice", "Sorry, the classification was not added.")
+    const nav = await utilities.getNav()
+    res.status(500).render("inventory/add-classification", {
+      title: "Add Classification",
+      nav,
+      errors: null,
+      classification_name,
+    })
+  }
+}
+
+/* ***************************
  * Deliver Add Inventory View
  * ************************** */
 async function buildAddInventory(req, res, next) {
@@ -52,6 +92,7 @@ async function addInventory(req, res, next) {
 
   if (result && result.rows) {
     req.flash("notice", "New inventory item successfully added.")
+    const nav = await utilities.getNav()
     res.status(201).render("inventory/management", {
       title: "Vehicle Management",
       nav,
@@ -59,7 +100,9 @@ async function addInventory(req, res, next) {
     })
   } else {
     req.flash("notice", "Sorry, the inventory item was not added.")
-    const classificationSelect = await utilities.buildClassificationList(invData.classification_id)
+    const classificationSelect = await utilities.buildClassificationList(
+      invData.classification_id
+    )
     res.status(500).render("inventory/add-inventory", {
       title: "Add Inventory",
       nav,
@@ -139,6 +182,8 @@ async function triggerError(req, res, next) {
 
 module.exports = {
   buildManagement,
+  buildAddClassification,
+  addClassification,
   buildAddInventory,
   addInventory,
   buildByClassificationId,

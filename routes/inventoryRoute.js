@@ -11,6 +11,24 @@ const invValidate = require("../utilities/inventory-validation")
 router.get("/", utilities.handleErrors(invController.buildManagement))
 
 /* ***************************
+ * Add Classification View
+ * ************************** */
+router.get(
+  "/add-classification",
+  utilities.handleErrors(invController.buildAddClassification)
+)
+
+/* ***************************
+ * Process Add Classification
+ * ************************** */
+router.post(
+  "/add-classification",
+  invValidate.classificationRules(),
+  invValidate.checkClassificationData,
+  utilities.handleErrors(invController.addClassification)
+)
+
+/* ***************************
  * Add Inventory View
  * ************************** */
 router.get(
