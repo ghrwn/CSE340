@@ -75,7 +75,10 @@ validate.inventoryRules = () => {
       .isLength({ min: 10 })
       .withMessage("Please provide a description (min 10 characters)."),
 
-    body("inv_image").trim().notEmpty().withMessage("Please provide an image path."),
+    body("inv_image")
+      .trim()
+      .notEmpty()
+      .withMessage("Please provide an image path."),
 
     body("inv_thumbnail")
       .trim()
@@ -133,6 +136,55 @@ validate.checkInvData = async (req, res, next) => {
       nav,
       errors,
       classificationSelect,
+      classification_id,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+    })
+    return
+  }
+  next()
+}
+
+/* ******************************
+ * Check update data and return errors back to edit-inventory (Step 2)
+ * ***************************** */
+validate.checkUpdateData = async (req, res, next) => {
+  const errors = validationResult(req)
+
+  const {
+    inv_id,
+    classification_id,
+    inv_make,
+    inv_model,
+    inv_year,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_miles,
+    inv_color,
+  } = req.body
+
+  if (!errors.isEmpty()) {
+    const nav = await utilities.getNav()
+    const classificationSelect = await utilities.buildClassificationList(
+      classification_id
+    )
+    const itemName = `${inv_make} ${inv_model}`
+
+    res.status(400).render("inventory/edit-inventory", {
+      title: "Edit " + itemName,
+      nav,
+      errors,
+      classificationSelect,
+      inv_id,
       classification_id,
       inv_make,
       inv_model,

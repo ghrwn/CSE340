@@ -8,7 +8,6 @@ const validate = {}
  * ********************************* */
 validate.registationRules = () => {
   return [
-    // firstname is required and must be string
     body("account_firstname")
       .trim()
       .escape()
@@ -16,7 +15,6 @@ validate.registationRules = () => {
       .isLength({ min: 1 })
       .withMessage("Please provide a first name."),
 
-    // lastname is required and must be string
     body("account_lastname")
       .trim()
       .escape()
@@ -24,7 +22,6 @@ validate.registationRules = () => {
       .isLength({ min: 2 })
       .withMessage("Please provide a last name."),
 
-    // valid email is required and cannot already exist in the database
     body("account_email")
       .trim()
       .escape()
@@ -39,7 +36,6 @@ validate.registationRules = () => {
         }
       }),
 
-    // password is required and must be strong password
     body("account_password")
       .trim()
       .notEmpty()
@@ -121,6 +117,109 @@ validate.checkLoginData = async (req, res, next) => {
       account_email,
     })
     return
+  }
+  next()
+}
+
+/* **********************************
+ * Account Update Rules
+ * ********************************* */
+validate.accountUpdateRules = () => {
+  return [
+    body("account_firstname")
+      .trim()
+      .escape()
+      .notEmpty()
+      .withMessage("First name is required."),
+
+    body("account_lastname")
+      .trim()
+      .escape()
+      .notEmpty()
+      .withMessage("Last name is required."),
+
+    body("account_email")
+      .trim()
+      .escape()
+      .notEmpty()
+      .isEmail()
+      .normalizeEmail()
+      .withMessage("A valid email is required.")
+      .custom(async (account_email, { req }) => {
+        const account_id = parseInt(req.body.account_id)
+        const current = await accountModel.getAccountById(account_id)
+
+        // if email not changed, allow it
+        if (current && current.account_email === account_email) return true
+
+        const emailExists = await accountModel.checkExistingEmail(account_email)
+        if (emailExists) {
+          throw new Error("Email exists. Please use a different email.")
+        }
+      }),
+  ]
+}
+
+/* **********************************
+ * Check Account Update Data
+ * ********************************* */
+validate.checkAccountUpdateData = async (req, res, next) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    const nav = await utilities.getNav()
+    const accountData = {
+      account_id: req.body.account_id,
+      account_firstname: req.body.account_firstname,
+      account_lastname: req.body.account_lastname,
+      account_email: req.body.account_email,
+    }
+    return res.status(400).render("account/update", {
+      title: "Update Account",
+      nav,
+      errors,
+      accountData,
+    })
+  }
+  next()
+}
+
+/* **********************************
+ * Password Update Rules
+ * ********************************* */
+validate.passwordRules = () => {
+  return [
+    body("account_password")
+      .trim()
+      .notEmpty()
+      .isStrongPassword({
+        minLength: 12,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
+      })
+      .withMessage("Password does not meet requirements."),
+  ]
+}
+
+/* **********************************
+ * Check Password Update Data
+ * ********************************* */
+validate.checkPasswordData = async (req, res, next) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    const nav = await utilities.getNav()
+    const account_id = parseInt(req.body.account_id)
+
+    // Refill the update form fields so they don't go blank
+    const current = await accountModel.getAccountById(account_id)
+
+    return res.status(400).render("account/update", {
+      title: "Update Account",
+      nav,
+      errors,
+      accountData: current || { account_id },
+    })
   }
   next()
 }

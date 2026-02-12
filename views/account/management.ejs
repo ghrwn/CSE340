@@ -1,7 +1,57 @@
 <section class="account-wrap">
   <h1><%= title %></h1>
 
-  <%- messages() %>
+  <!-- SUCCESS MESSAGE -->
+  <% if (messages && messages.success) { %>
+    <div class="success">
+      <%= messages.success() %>
+    </div>
+  <% } %>
 
-  <p>You're logged in.</p>
+  <!-- NOTICE / ERROR MESSAGE -->
+  <% if (messages && messages.notice) { %>
+    <div class="notice">
+      <%= messages.notice() %>
+    </div>
+  <% } %>
+
+  <!-- GREETING (ALL LOGGED-IN USERS) -->
+  <% if (locals.accountData) { %>
+    <h2>
+      Welcome <%= locals.accountData.account_firstname %>
+    </h2>
+  <% } %>
+
+  <!-- UPDATE ACCOUNT LINK (ALL USERS) -->
+  <% if (locals.accountData) { %>
+    <ul class="management-links">
+      <li>
+        <a
+          href="/account/update/<%= locals.accountData.account_id %>"
+          title="Update account information"
+        >
+          Update Account Information
+        </a>
+      </li>
+    </ul>
+  <% } %>
+
+  <!-- INVENTORY MANAGEMENT (EMPLOYEE / ADMIN ONLY) -->
+  <% if (
+       locals.accountData &&
+       (locals.accountData.account_type === "Employee" ||
+        locals.accountData.account_type === "Admin")
+     ) { %>
+
+    <h3>Inventory Management</h3>
+
+    <ul class="management-links">
+      <li>
+        <a href="/inventory/" title="Manage Inventory">
+          Go to Inventory Management
+        </a>
+      </li>
+    </ul>
+
+  <% } %>
 </section>

@@ -1,0 +1,83 @@
+<section class="account-wrap">
+  <h1><%= title %></h1>
+
+  <%- messages() %>
+
+  <% if (errors) { %>
+    <ul class="notice">
+      <% errors.array().forEach(error => { %>
+        <li><%= error.msg %></li>
+      <% }) %>
+    </ul>
+  <% } %>
+
+  <h2>Account Update</h2>
+
+  <form action="/account/update" method="post" class="account-form">
+    <input
+      type="hidden"
+      name="account_id"
+      id="account_id"
+      value="<%= locals.account_id ?? (accountData ? accountData.account_id : '') %>"
+    >
+
+    <label for="account_firstname">First Name</label>
+    <input
+      type="text"
+      name="account_firstname"
+      id="account_firstname"
+      required
+      value="<%= locals.account_firstname ?? (accountData ? accountData.account_firstname : '') %>"
+    >
+
+    <label for="account_lastname">Last Name</label>
+    <input
+      type="text"
+      name="account_lastname"
+      id="account_lastname"
+      required
+      value="<%= locals.account_lastname ?? (accountData ? accountData.account_lastname : '') %>"
+    >
+
+    <label for="account_email">Email</label>
+    <input
+      type="email"
+      name="account_email"
+      id="account_email"
+      required
+      value="<%= locals.account_email ?? (accountData ? accountData.account_email : '') %>"
+    >
+
+    <button type="submit">Update Account</button>
+  </form>
+
+  <hr>
+
+  <h2>Change Password</h2>
+
+  <p class="password-reqs">
+    Password must be at least 12 characters and include at least 1 uppercase letter,
+    1 lowercase letter, 1 number, and 1 special character.
+  </p>
+
+  <form action="/account/update-password" method="post" class="account-form">
+    <input
+      type="hidden"
+      name="account_id"
+      id="account_id_pw"
+      value="<%= locals.account_id ?? (accountData ? accountData.account_id : '') %>"
+    >
+
+    <label for="account_password">New Password</label>
+    <input
+      type="password"
+      name="account_password"
+      id="account_password"
+      required
+      pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{12,}$"
+      title="Min 12 chars, include uppercase, lowercase, number, and special character."
+    >
+
+    <button type="submit">Change Password</button>
+  </form>
+</section>

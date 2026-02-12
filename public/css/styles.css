@@ -374,6 +374,18 @@ footer {
   color: #000;
 }
 
+/* NEW: Flash / Success Messages (green) */
+.success {
+  margin: 0 0 1rem 0;
+  padding: 0.8rem;
+  background: #e0ffe8;
+  border: 1px solid #66cc88;
+  border-radius: 6px;
+  list-style: none;
+  color: #003d1f;
+  font-weight: 600;
+}
+
 /* =========================
    Client-side Validation Styles
 ========================= */
@@ -437,4 +449,57 @@ footer {
 
 .management-links a:hover {
   background: #1f4fa8;
+}
+
+/* =========================
+   INVENTORY MANAGEMENT TABLE (AJAX LIST)
+========================= */
+
+#inventoryDisplay {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background: #ffffff;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* Table Header */
+#inventoryDisplay thead {
+  background-color: #2d6cdf;
+  color: #ffffff;
+}
+
+#inventoryDisplay th {
+  padding: 0.75rem;
+  text-align: left;
+  font-weight: 600;
+}
+
+/* Table Body */
+#inventoryDisplay td {
+  padding: 0.7rem;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Zebra striping */
+#inventoryDisplay tbody tr:nth-child(even) {
+  background-color: #f2f4f7;
+}
+
+/* Hover effect */
+#inventoryDisplay tbody tr:hover {
+  background-color: #e6f0ff;
+}
+
+/* Modify/Delete links */
+#inventoryDisplay a {
+  text-decoration: none;
+  font-weight: 600;
+  color: #2d6cdf;
+}
+
+#inventoryDisplay a:hover {
+  text-decoration: underline;
+  color: #1f4fa8;
 }

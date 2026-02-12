@@ -1,4 +1,5 @@
 const invModel = require("../models/inventory-model")
+const accountModel = require("../models/account-model")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
 
@@ -146,6 +147,36 @@ Util.checkLogin = (req, res, next) => {
   }
   req.flash("notice", "Please log in to access that area.")
   return res.redirect("/account/login")
+}
+
+/* ***************************
+ * Check account type middleware (Employee/Admin only)
+ * ************************** */
+Util.checkAccountType = (req, res, next) => {
+  const account = res.locals.accountData
+
+  // Not logged in → send to login
+  if (!account) {
+    req.flash("notice", "Please log in to access that area.")
+    return res.redirect("/account/login")
+  }
+
+  // Logged in but wrong type → send to account management (NOT login)
+  const type = account.account_type
+  if (type === "Employee" || type === "Admin") {
+    return next()
+  }
+
+  req.flash("notice", "Employee or Admin access required.")
+  return res.redirect("/account/")
+}
+
+/* ***************************
+ * Middleware to build locals for views
+ * ************************** */
+Util.setLocals = async (req, res, next) => {
+  res.locals.nav = await Util.getNav()
+  return next()
 }
 
 module.exports = Util

@@ -1,10 +1,7 @@
 <section class="management-wrap">
   <h1><%= title %></h1>
 
-  <!-- Flash Messages -->
-  <% if (messages) { %>
-    <%- messages() %>
-  <% } %>
+  <%- messages() %>
 
   <p class="form-note">
     Use the links below to manage vehicle classifications and inventory.
@@ -23,4 +20,17 @@
       </a>
     </li>
   </ul>
+
+  <hr>
+
+  <h2>Manage Inventory</h2>
+  <p>Select a classification to see the inventory items in that category.</p>
+
+  <%- classificationSelect %>
+
+  <table id="inventoryDisplay"></table>
+
+  <noscript>JavaScript must be enabled to use this page.</noscript>
 </section>
+
+<script src="/js/inventory.js"></script>
