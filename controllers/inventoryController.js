@@ -143,7 +143,6 @@ async function buildEditInventory(req, res, next) {
     )
     const itemName = `${itemData.inv_make} ${itemData.inv_model}`
 
-    // ✅ Ensure numeric fields render correctly in <input type="number">
     const inv_price =
       itemData.inv_price !== null && itemData.inv_price !== undefined
         ? Number(itemData.inv_price)
@@ -343,7 +342,7 @@ async function buildByClassificationId(req, res, next) {
  * ************************** */
 async function buildByInventoryId(req, res, next) {
   try {
-    const inv_id = req.params.invId
+    const inv_id = parseInt(req.params.invId)
     const data = await invModel.getInventoryById(inv_id)
 
     if (!data.rows.length) {
@@ -360,6 +359,7 @@ async function buildByInventoryId(req, res, next) {
       title: `${vehicle.inv_make} ${vehicle.inv_model}`,
       nav,
       detailHTML,
+      inv_id: vehicle.inv_id,
     })
   } catch (error) {
     next(error)

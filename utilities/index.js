@@ -55,6 +55,14 @@ Util.buildClassificationGrid = function (data) {
  * Build inventory detail HTML
  * ************************** */
 Util.buildInventoryDetail = function (vehicle) {
+  const favoritesButton =
+    `
+      <form action="/account/favorites/add" method="post" class="favorite-form">
+        <input type="hidden" name="inv_id" value="${vehicle.inv_id}">
+        <button type="submit" class="favorite-btn">Add to Favorites</button>
+      </form>
+    `
+
   return `
     <section class="vehicle-detail">
       <div class="vehicle-detail-image">
@@ -69,6 +77,8 @@ Util.buildInventoryDetail = function (vehicle) {
           <strong>Price:</strong>
           $${Number(vehicle.inv_price).toLocaleString()}
         </p>
+
+        ${favoritesButton}
 
         <p>
           <strong>Mileage:</strong>
@@ -155,13 +165,11 @@ Util.checkLogin = (req, res, next) => {
 Util.checkAccountType = (req, res, next) => {
   const account = res.locals.accountData
 
-  // Not logged in → send to login
   if (!account) {
     req.flash("notice", "Please log in to access that area.")
     return res.redirect("/account/login")
   }
 
-  // Logged in but wrong type → send to account management (NOT login)
   const type = account.account_type
   if (type === "Employee" || type === "Admin") {
     return next()

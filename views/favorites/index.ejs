@@ -1,0 +1,34 @@
+<section class="account-wrap">
+  <h1><%= title %></h1>
+
+  <% if (messages && messages.success) { %>
+    <div class="success"><%= messages.success() %></div>
+  <% } %>
+
+  <% if (messages && messages.notice) { %>
+    <div class="notice"><%= messages.notice() %></div>
+  <% } %>
+
+  <!-- Grid (nice cards layout) -->
+  <%- grid %>
+
+  <!-- Remove buttons (only show when there are favorites) -->
+  <% if (favorites && favorites.length > 0) { %>
+    <h2 style="margin-top: 1.5rem;">Remove a Favorite</h2>
+
+    <ul class="management-links">
+      <% favorites.forEach(item => { %>
+        <li style="display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+          <a href="/inventory/detail/<%= item.inv_id %>">
+            <%= item.inv_year %> <%= item.inv_make %> <%= item.inv_model %>
+          </a>
+
+          <form action="/account/favorites/remove" method="post" style="margin: 0;">
+            <input type="hidden" name="inv_id" value="<%= item.inv_id %>">
+            <button type="submit">Remove</button>
+          </form>
+        </li>
+      <% }) %>
+    </ul>
+  <% } %>
+</section>

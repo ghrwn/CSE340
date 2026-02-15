@@ -28,6 +28,7 @@ const utilities = require("./utilities")
 const staticRoutes = require("./routes/static")
 const inventoryRoutes = require("./routes/inventoryRoute")
 const accountRoutes = require("./routes/accountRoute")
+const favoritesRoutes = require("./routes/favoritesRoute")
 
 /* ***********************
  * Middleware — Sessions
@@ -72,6 +73,7 @@ app.set("layout", "./layouts/layout")
 app.use(staticRoutes)
 app.use("/inventory", inventoryRoutes)
 app.use("/account", accountRoutes)
+app.use("/account/favorites", favoritesRoutes)
 
 /* ***********************
  * Home Route
